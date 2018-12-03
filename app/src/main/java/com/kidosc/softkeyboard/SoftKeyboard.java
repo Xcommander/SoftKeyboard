@@ -108,8 +108,8 @@ public class SoftKeyboard extends InputMethodService
             mLastDisplayWidth = displayWidth;
         }
         mQwertyFirstKeyboard = new LatinKeyboard(this, R.xml.qwerty);
-        mQwertySecondKeyboard=new LatinKeyboard(this,R.xml.qwerty_1);
-        mQwertyThridKeyboard=new LatinKeyboard(this,R.xml.qwerty_2);
+        mQwertySecondKeyboard = new LatinKeyboard(this, R.xml.qwerty_1);
+        mQwertyThridKeyboard = new LatinKeyboard(this, R.xml.qwerty_2);
         mSymbolsKeyboard = new LatinKeyboard(this, R.xml.symbols);
         mSymbolsShiftedKeyboard = new LatinKeyboard(this, R.xml.symbols_shift);
     }
@@ -542,8 +542,10 @@ public class SoftKeyboard extends InputMethodService
             // Show a menu or somethin'
         } else if (primaryCode == LatinKeyboardView.KEYCODE_ENGLISH_BACK) {
             Log.e("xulinchao", "onKey: back");
+            handleBackAndNext("back");
         } else if (primaryCode == LatinKeyboardView.KEYCODE_ENGLISH_NEXT) {
             Log.e("xulinchao", "onKey: next");
+            handleBackAndNext("next");
         } else if (primaryCode == Keyboard.KEYCODE_MODE_CHANGE
                 && mInputView != null) {
             Keyboard current = mInputView.getKeyboard();
@@ -619,9 +621,11 @@ public class SoftKeyboard extends InputMethodService
         if (mInputView == null) {
             return;
         }
-
+        Log.d("xulinchao", "handleShift: ");
         Keyboard currentKeyboard = mInputView.getKeyboard();
-        if (mQwertyFirstKeyboard == currentKeyboard) {
+        if (mQwertyFirstKeyboard == currentKeyboard ||
+                mQwertySecondKeyboard == currentKeyboard ||
+                mQwertyThridKeyboard == currentKeyboard) {
             // Alphabet keyboard
             checkToggleCapsLock();
             mInputView.setShifted(mCapsLock || !mInputView.isShifted());
@@ -635,6 +639,40 @@ public class SoftKeyboard extends InputMethodService
             mSymbolsKeyboard.setShifted(false);
         }
     }
+
+    private void handleBackAndNext(String mode) {
+        if (mInputView == null) {
+            return;
+        }
+
+        Keyboard currentKeyboard = mInputView.getKeyboard();
+        if(mInputView.isShifted()){
+            handleShift();
+        }
+        switch (mode) {
+            case "back":
+                if (currentKeyboard == mQwertySecondKeyboard) {
+                    setLatinKeyboard(mQwertyFirstKeyboard);
+
+                } else if (currentKeyboard == mQwertyThridKeyboard) {
+                    setLatinKeyboard(mQwertySecondKeyboard);
+
+                }
+                break;
+            case "next":
+                if (currentKeyboard == mQwertyFirstKeyboard) {
+                    setLatinKeyboard(mQwertySecondKeyboard);
+
+                } else if (currentKeyboard == mQwertySecondKeyboard) {
+                    setLatinKeyboard(mQwertyThridKeyboard);
+
+
+                }
+
+                break;
+        }
+    }
+
 
     private void handleCharacter(int primaryCode, int[] keyCodes) {
         if (isInputViewShown()) {
@@ -677,7 +715,7 @@ public class SoftKeyboard extends InputMethodService
 
     private void checkToggleCapsLock() {
         long now = System.currentTimeMillis();
-        if (mLastShiftTime + 800 > now) {
+        if (mLastShiftTime + 100 > now) {
             mCapsLock = !mCapsLock;
             mLastShiftTime = 0;
         } else {
