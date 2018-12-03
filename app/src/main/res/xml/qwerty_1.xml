@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/*
+**
+** Copyright 2008, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:horizontalGap="0px"
+    android:keyWidth="10%p"
+    android:keyHeight="@dimen/key_height"
+    android:verticalGap="0px">
+
+    <Row>
+        <Key
+            android:codes="-2"
+            android:keyWidth="20%p"
+            android:keyEdgeFlags="left"
+            android:keyLabel="123" />
+        <Key
+            android:codes="106"
+            android:keyWidth="20%p"
+            android:keyLabel="j" />
+        <Key
+            android:codes="107"
+            android:keyWidth="20%p"
+            android:keyLabel="k" />
+        <Key
+            android:codes="108"
+            android:keyWidth="20%p"
+            android:keyLabel="l" />
+
+        <Key
+            android:codes="-5"
+            android:isRepeatable="true"
+            android:keyWidth="20%p"
+            android:keyEdgeFlags="right"
+            android:keyIcon="@drawable/sym_keyboard_delete" />
+    </Row>
+
+    <Row>
+        <!--上一个界面-->
+        <Key
+            android:codes="-102"
+            android:isRepeatable="true"
+            android:keyWidth="20%p"
+            android:keyEdgeFlags="right"
+            android:keyIcon="@android:drawable/ic_media_previous"/>
+        <Key
+            android:codes="109"
+            android:keyWidth="20%p"
+            android:keyLabel="m" />
+        <Key
+            android:codes="110"
+            android:keyWidth="20%p"
+            android:keyLabel="n" />
+        <Key
+            android:codes="111"
+            android:keyWidth="20%p"
+            android:keyLabel="0" />
+        <!--到下一个界面英文界面-->
+        <Key
+            android:codes="-103"
+            android:isRepeatable="true"
+            android:keyWidth="20%p"
+            android:keyEdgeFlags="right"
+            android:keyIcon="@android:drawable/ic_media_next"/>
+    </Row>
+
+    <Row android:rowEdgeFlags="bottom">
+        <Key
+            android:codes="-1"
+            android:isModifier="true"
+            android:isSticky="true"
+            android:keyWidth="20%p"
+            android:keyEdgeFlags="left"
+            android:keyIcon="@drawable/sym_keyboard_shift" />
+
+        <Key
+            android:codes="-101"
+            android:keyWidth="0%p"
+            android:keyIcon="@drawable/sym_keyboard_language_switch" />
+        <Key
+            android:codes="112"
+            android:keyWidth="20%p"
+            android:keyLabel="p" />
+        <Key
+            android:codes="113"
+            android:keyWidth="20%p"
+            android:keyLabel="q" />
+        <Key
+            android:codes="114"
+            android:keyWidth="20%p"
+            android:keyLabel="k" />
+        <Key
+            android:codes="-3"
+            android:keyWidth="20%p"
+            android:keyEdgeFlags="left"
+            android:keyIcon="@drawable/sym_keyboard_done" />
+    </Row>
+</Keyboard>
