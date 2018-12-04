@@ -73,7 +73,9 @@ public class SoftKeyboard extends InputMethodService
     private long mMetaState;
 
     private LatinKeyboard mSymbolsKeyboard;
-    private LatinKeyboard mSymbolsShiftedKeyboard;
+    private LatinKeyboard mSymbolsShiftedFirstKeyboard;
+    private LatinKeyboard mSymbolsShiftedSecondKeyboard;
+    private LatinKeyboard mSymbolsShiftedThirdKeyboard;
     private LatinKeyboard mQwertyFirstKeyboard;
     private LatinKeyboard mQwertySecondKeyboard;
     private LatinKeyboard mQwertyThridKeyboard;
@@ -111,7 +113,9 @@ public class SoftKeyboard extends InputMethodService
         mQwertySecondKeyboard = new LatinKeyboard(this, R.xml.qwerty_1);
         mQwertyThridKeyboard = new LatinKeyboard(this, R.xml.qwerty_2);
         mSymbolsKeyboard = new LatinKeyboard(this, R.xml.symbols);
-        mSymbolsShiftedKeyboard = new LatinKeyboard(this, R.xml.symbols_shift);
+        mSymbolsShiftedFirstKeyboard = new LatinKeyboard(this, R.xml.symbols_shift);
+        mSymbolsShiftedSecondKeyboard = new LatinKeyboard(this, R.xml.symbols_shift_1);
+        mSymbolsShiftedThirdKeyboard = new LatinKeyboard(this, R.xml.symbols_shift_2);
     }
 
     /**
@@ -541,15 +545,14 @@ public class SoftKeyboard extends InputMethodService
         } else if (primaryCode == LatinKeyboardView.KEYCODE_OPTIONS) {
             // Show a menu or somethin'
         } else if (primaryCode == LatinKeyboardView.KEYCODE_ENGLISH_BACK) {
-            Log.e("xulinchao", "onKey: back");
             handleBackAndNext("back");
         } else if (primaryCode == LatinKeyboardView.KEYCODE_ENGLISH_NEXT) {
-            Log.e("xulinchao", "onKey: next");
             handleBackAndNext("next");
         } else if (primaryCode == Keyboard.KEYCODE_MODE_CHANGE
                 && mInputView != null) {
             Keyboard current = mInputView.getKeyboard();
-            if (current == mSymbolsKeyboard || current == mSymbolsShiftedKeyboard) {
+            if (current == mSymbolsKeyboard || current == mSymbolsShiftedFirstKeyboard ||
+                    current == mSymbolsShiftedSecondKeyboard || current == mSymbolsShiftedThirdKeyboard) {
                 setLatinKeyboard(mQwertyFirstKeyboard);
             } else {
                 setLatinKeyboard(mSymbolsKeyboard);
@@ -630,13 +633,10 @@ public class SoftKeyboard extends InputMethodService
             checkToggleCapsLock();
             mInputView.setShifted(mCapsLock || !mInputView.isShifted());
         } else if (currentKeyboard == mSymbolsKeyboard) {
-            mSymbolsKeyboard.setShifted(true);
-            setLatinKeyboard(mSymbolsShiftedKeyboard);
-            mSymbolsShiftedKeyboard.setShifted(true);
-        } else if (currentKeyboard == mSymbolsShiftedKeyboard) {
-            mSymbolsShiftedKeyboard.setShifted(false);
+            setLatinKeyboard(mSymbolsShiftedFirstKeyboard);
+        } else if (currentKeyboard == mSymbolsShiftedFirstKeyboard ||
+                currentKeyboard == mSymbolsShiftedSecondKeyboard || currentKeyboard == mSymbolsShiftedThirdKeyboard) {
             setLatinKeyboard(mSymbolsKeyboard);
-            mSymbolsKeyboard.setShifted(false);
         }
     }
 
@@ -646,7 +646,7 @@ public class SoftKeyboard extends InputMethodService
         }
 
         Keyboard currentKeyboard = mInputView.getKeyboard();
-        if(mInputView.isShifted()){
+        if (mInputView.isShifted()) {
             handleShift();
         }
         switch (mode) {
@@ -657,6 +657,11 @@ public class SoftKeyboard extends InputMethodService
                 } else if (currentKeyboard == mQwertyThridKeyboard) {
                     setLatinKeyboard(mQwertySecondKeyboard);
 
+                } else if (currentKeyboard == mSymbolsShiftedSecondKeyboard) {
+                    setLatinKeyboard(mSymbolsShiftedFirstKeyboard);
+
+                } else if (currentKeyboard == mSymbolsShiftedThirdKeyboard) {
+                    setLatinKeyboard(mSymbolsShiftedSecondKeyboard);
                 }
                 break;
             case "next":
@@ -665,7 +670,11 @@ public class SoftKeyboard extends InputMethodService
 
                 } else if (currentKeyboard == mQwertySecondKeyboard) {
                     setLatinKeyboard(mQwertyThridKeyboard);
+                } else if (currentKeyboard == mSymbolsShiftedFirstKeyboard) {
+                    setLatinKeyboard(mSymbolsShiftedSecondKeyboard);
 
+                } else if (currentKeyboard == mSymbolsShiftedSecondKeyboard) {
+                    setLatinKeyboard(mSymbolsShiftedThirdKeyboard);
 
                 }
 
